@@ -1,0 +1,10 @@
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+  }
+
+  .your-container-class {
+    background-image: url('./assests/charkha.jpeg'); /* Adjust the path accordingly */
+  }
+}
