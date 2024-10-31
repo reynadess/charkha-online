@@ -1,15 +1,23 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import bodyParser from "body-parser";
+
 const app = express();
 const port = 3001;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const reactBuildPath = path.join(__dirname, "../../frontend/build");
-console.log(reactBuildPath);
+
+var jsonParser = bodyParser.json();
 
 app.get("/api", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello Vinita!");
+});
+
+app.post("/api/user", jsonParser, (req, res) => {
+  console.log(req.body);
+  res.send("Got Data");
 });
 
 app.use(express.static(reactBuildPath));
@@ -24,7 +32,7 @@ app.use((req, res, next) => {
     res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
     res.header("Expires", "-1");
     res.header("Pragma", "no-cache");
-    res.sendFile(path.join(__dirname, "build", "index.html"));
+    res.sendFile(reactBuildPath);
   }
 });
 
