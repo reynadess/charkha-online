@@ -5,6 +5,7 @@ import {
   Container,
   Grid,
   InputBase,
+  mobileStepperClasses,
   Paper,
   Typography,
 } from "@mui/material";
@@ -15,6 +16,7 @@ import imgdata from "./assests/redbg.png";
 import "./print-styles.css";
 import vasu from "./assests/vasu-removebg-preview_prev_ui.png";
 import React from "react";
+import axios from "axios";
 
 function App() {
   const [val1, setVal1] = useState(() =>
@@ -23,23 +25,30 @@ function App() {
   const [val2, setVal2] = useState(() => Math.floor(Math.random() * 90 + 10));
   const [screen, setScreen] = useState(true);
   const [familyData, setData] = useState({
-    image: imgdata,
-    name: "",
-    state: "",
-    mobile: "",
-    birthDate: "",
-    country: ""
+    name: "Sai Chaitanya",
+    state: "Telangana",
+    mobile: "8106490830",
+    birthDate: "1999-09-27",
+    country: "India",
   });
 
-  // console.log(val2)
-
-  const handleFileChange = (e) => {
-    setData({ ...familyData, image: URL.createObjectURL(e.target.files[0]) });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSave = (e) => {
     e.preventDefault();
-    console.log(familyData);
+    const user = {
+      name: familyData.name,
+      state: familyData.state,
+      mobile: familyData.mobile,
+      birthDate: familyData.birthDate,
+      country: familyData.country,
+    };
+    axios
+      .post("/api/user", user)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleSetValue = (e) => {
@@ -94,45 +103,6 @@ function App() {
                     height: { lg: "65px", md: "60px", sm: "50px", xs: "40px" },
                   }}
                 >
-                  <Button
-                    className="print-only-button hide-on-print"
-                    sx={{
-                      display: screen
-                        ? { xs: "flex", sm: "flex", md: "flex", lg: "flex" }
-                        : "none",
-                      color: "white",
-                      bgcolor: "black",
-                      "&:hover": { bgcolor: "black" },
-                      border: "1.5px solid gray",
-                      borderRadius: "20px",
-                      whiteSpace: "nowrap",
-                      fontSize: {
-                        xs: "7px",
-                        sm: "8px",
-                        md: "11px",
-                        lg: "12px",
-                      },
-                      position: "relative",
-                      "@media print": {
-                        display: "none",
-                      },
-                    }}
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      style={{
-                        border: "1px solid white",
-                        position: "absolute",
-                        height: "100%",
-                        width: "100%",
-                        opacity: 0,
-                      }}
-                      onChange={handleFileChange}
-                    />
-                    Upload Image
-                  </Button>
-
                   <Button
                     className="print-only-button hide-on-print"
                     onClick={() => {
@@ -218,32 +188,7 @@ function App() {
                     justifyContent: "center",
                     mb: "6px",
                   }}
-                >
-                  <Box
-                    sx={{
-                      width: {
-                        lg: "120px",
-                        md: "120px",
-                        sm: "80px",
-                        xs: "60px",
-                      },
-                      height: {
-                        lg: "120px",
-                        md: "120px",
-                        sm: "80px",
-                        xs: "60px",
-                      },
-                      mt: { lg: "15px", md: "25px", sm: "8px", xs: "" },
-                    }}
-                  >
-                    <img
-                      alt="img"
-                      src={familyData.image}
-                      height={"100%"}
-                      width={"100%"}
-                    />
-                  </Box>
-                </Grid>
+                ></Grid>
                 <Grid container>
                   <Grid
                     item
@@ -349,7 +294,7 @@ function App() {
                       <InputBase
                         placeholder="Type here..."
                         style={{
-                          border: screen ? "1px solid #e0e0e0" : ""
+                          border: screen ? "1px solid #e0e0e0" : "",
                         }}
                         type="number"
                         name="mobile"
@@ -550,7 +495,7 @@ function App() {
                           }}
                         >
                           <Button
-                            onClick = {handleSubmit}
+                            onClick={handleSave}
                             className="print-only-button hide-on-print"
                             sx={{
                               display: screen
@@ -579,7 +524,7 @@ function App() {
                               },
                             }}
                           >
-                            Submit 
+                            Submit
                           </Button>
                         </Typography>
                       </Box>
